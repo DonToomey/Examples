@@ -1,2 +1,4 @@
-# Examples
-Coding Examples
+# Examples - Apps Containing Various Coding Topics
+
+## Blazor
+- JSInterop
