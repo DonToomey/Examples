@@ -1,4 +1,4 @@
 # Examples - Apps Containing Various Coding Topics
 
 ## Blazor
-- JSInterop
+- JavaScript Interoperability (JSInterop)

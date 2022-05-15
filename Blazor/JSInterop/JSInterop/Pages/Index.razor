@@ -1,9 +1,69 @@
 ﻿@page "/"
+@inject IJSRuntime JS
 
-<PageTitle>Index</PageTitle>
+<PageTitle>JSInterop</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>JavaScript Interoperability</h1>
 
-Welcome to your new app.
+<button class="btn btn-primary" @onclick="RunAlert">Alert</button>
+<button class="btn btn-primary" @onclick="RunAdd">Add 8 + 9</button>
+<button class="btn btn-primary" @onclick="RunWindowDimensions">Window Dimentions</button>
+<button class="btn btn-primary" @onclick="RunToastrHello">Toastr Hello</button>
+<button class="btn btn-primary" @onclick="RunToastrGoodbye">Toastr Goodbye</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p>
+    <h2>JavaScript Libraries Used in this example</h2>
+    <a href="https://codeseven.github.io/toastr/" target="_blank">toastr</a><br />
+    <a href="https://releases.jquery.com/" target="_blank">jQuery</a><br />
+    My own JavaScript
+</p>
+
+<p>
+    <h2>Articles about JavaScript Interop in Blazor</h2>
+    <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-6.0" target="_blank">ASP.NET Core Blazor JavaScript interoperability (JS interop) - Microsoft</a><br />
+    <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-6.0" target="_blank">Call JavaScript functions from .NET methods in ASP.NET Core Blazor - Microsoft</a><br />
+    <a href="https://chrissainty.com/using-javascript-interop-in-razor-components-and-blazor/" target="_blank">Using JavaScript Interop in Blazor - Chris Sainty</a><br />
+    <a href="https://code-maze.com/how-to-call-javascript-code-from-net-blazor-webassembly/" target="_blank">How to Call JavaScript Functions with C# in Blazor WebAssembly - CodeMaze</a><br />
+    <a href="https://www.imaginet.com/2021/guide-blazor-javascript-interop/" target="_blank">Guide to Blazor JavaScript Interop - Imaginet</a><br />
+    <a href="https://blazor-university.com/javascript-interop/" target="_blank">JavaScript interop - Blazor University</a><br />
+    <a href="https://www.syncfusion.com/blogs/post/pros-and-cons-of-using-javascript-interop-in-blazor.aspx" target="_blank">Pros and Cons of Using JavaScript Interop in Blazor - Syncfusion</a><br />
+    <a href="http://www.binaryintellect.net/articles/6f1c4298-6564-4ca2-b355-c8327511babc.aspx" target="_blank">Use JavaScript Interop in Blazor - BinaryIntellect.net</a><br />
+    <a href="https://www.yogihosting.com/blazor-js-interop-javascript/" target="_blank">JS Interop - Working with JavaScript in Blazor - YogiHosting</a><br />
+</p>
+
+@code {
+    private async Task RunAlert()
+    {
+        await JS.InvokeVoidAsync("alert", "Hello from JSInterop");
+    }
+
+    private async Task RunAdd()
+    {
+        int total = await JS.InvokeAsync<int>("addTwoNumbers", 8, 9);
+
+        await JS.InvokeVoidAsync("toastr.success", "The total of 8 + 9 = " + total, "Add Two Numbers Result");
+    }
+
+    private async Task RunWindowDimensions()
+    {
+        WindowDimensions windowDimensions = await JS.InvokeAsync<WindowDimensions>("getWindowDimensions");
+
+        await JS.InvokeVoidAsync("toastr.success", $"Window Dimensions</br>Height: { windowDimensions.Height }</br>Width: { windowDimensions.Width }");
+    }
+
+    private async Task RunToastrHello()
+    {
+        await JS.InvokeVoidAsync("toastr.success", "Hello");
+    }
+
+    private async Task RunToastrGoodbye()
+    {
+        await JS.InvokeVoidAsync("toastr.success", "Goodbye");
+    }
+
+    private class WindowDimensions
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+    }
+}
